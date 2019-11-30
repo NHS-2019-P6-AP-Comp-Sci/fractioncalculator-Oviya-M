@@ -65,105 +65,155 @@ public class FracCalc {
 
 		int undSc = operand1.indexOf("_");
 		int slash1 = operand1.indexOf("/");
+		int whole1;
+		int numer1;
+		int denom1;
 		if (slash1 != -1) {
 			// FRACTION DENOMINATOr
 			int length1 = operand1.length();
 			String c = operand1.substring(slash1 + 1, length1);
-			int denom1 = Integer.parseInt(c);
-	//		System.out.println("denominator: " + denom1);
+			denom1 = Integer.parseInt(c);
+			// System.out.println("denominator: " + denom1);
 
 			if (undSc != -1) {
 				// WHOLE NUM
 				String a = operand1.substring(0, undSc);
-				int whole1 = Integer.parseInt(a);
-		//		System.out.println("whole num: " + whole1);
+				whole1 = Integer.parseInt(a);
+				// System.out.println("whole num: " + whole1);
 				// FRACTION NUMERATOR WITH "_"
 				String b = operand1.substring(undSc + 1, slash1);
-				int numer1 = Integer.parseInt(b);
-		//		System.out.println("numerator:" + numer1);
+				numer1 = Integer.parseInt(b);
+				// System.out.println("numerator:" + numer1);
 
 			} else {
 				// FRACTION NUMERATOR WITHOUT "_" (NO WHOLE NUM)
-				int whole1 = 0;
+				whole1 = 0;
 				String b = operand1.substring(0, slash1);
-				int numer1 = Integer.parseInt(b);
-		//		System.out.println("numerator: " + numer1);
+				numer1 = Integer.parseInt(b);
+				// System.out.println("numerator: " + numer1);
 
 			}
 		} else {
-			int numer1 = 0;
-			int denom1 = 1;
+			numer1 = 0;
+			denom1 = 1;
 			if (undSc != -1) {
 				// WHOLE NUM
-				int whole1 = 0;
-	//			System.out.println("whole num: " + whole1);
+				whole1 = 0;
+				// System.out.println("whole num: " + whole1);
 
 			} else {
 				// FRACTION NUMERATOR WITHOUT "_" (NO WHOLE NUM)
 				int wLength1 = operand2.length();
 				String a = operand1.substring(0);
-				int whole1 = Integer.parseInt(a);
-		//		System.out.println("whole num: " + whole1);
-				
+				whole1 = Integer.parseInt(a);
+				// System.out.println("whole num: " + whole1);
+
 			}
 		}
 
 		// SPLIT OPERAND2 INTO INTEGERS NUMBER
-		
 
 		int slash2 = operand2.indexOf("/");
-		int undSc2 = operand2.indexOf("_"); 
+		int undSc2 = operand2.indexOf("_");
 		int whole2;
 		int numer2;
 		int denom2;
-		if (slash2 != -1) { 
-			 //FRACTION DENOMINATOR 
-			int length2 = operand2.length(); 
-			String f = operand2.substring(slash2+1, length2); 
+		if (slash2 != -1) {
+			// FRACTION DENOMINATOR
+			int length2 = operand2.length();
+			String f = operand2.substring(slash2 + 1, length2);
 			denom2 = Integer.parseInt(f);
-		//	System.out.println("denominator: " + denom2);
-			
+			// System.out.println("denominator: " + denom2);
+
 			if (undSc2 != -1) {
-			  // WHOLE NUM
-				String d = operand2.substring(0, undSc2); 
+				// WHOLE NUM
+				String d = operand2.substring(0, undSc2);
 				whole2 = Integer.parseInt(d);
-			//	System.out.println("whole2: " + whole2);
-			  //FRACTION NUMERATOR 
-				String e = operand2.substring(undSc2+1, slash2); 
-				numer2 = Integer.parseInt(e); 
-			//	System.out.println("numerator:" +numer2); 
-			}
-			else {
-				//WHOLE WITHOUT "_"
+				// System.out.println("whole2: " + whole2);
+				// FRACTION NUMERATOR
+				String e = operand2.substring(undSc2 + 1, slash2);
+				numer2 = Integer.parseInt(e);
+				// System.out.println("numerator:" +numer2);
+			} else {
+				// WHOLE WITHOUT "_"
 				whole2 = 0;
-				//NUMERATOR WITHOUT "_"
-				String e = operand2.substring(0, slash2); 
-				numer2 = Integer.parseInt(e); 
-		//		System.out.println("numerator: " + numer2);
+				// NUMERATOR WITHOUT "_"
+				String e = operand2.substring(0, slash2);
+				numer2 = Integer.parseInt(e);
+				// System.out.println("numerator: " + numer2);
 			}
-		 
-		 
-			}
-		else { 
+
+		} else {
 			numer2 = 0;
 			denom2 = 1;
 			if (undSc2 != -1) {
-				//WHOLE WITHOUT 
+				// WHOLE WITHOUT
 				whole2 = 0;
-			}
-			else {
+			} else {
 				// WHOLE NUM
-				String d = operand2.substring(0); 
+				String d = operand2.substring(0);
 				whole2 = Integer.parseInt(d);
-			//	System.out.println("whole2: " + whole2);				
-			}	  
+				// System.out.println("whole2: " + whole2);
+			}
+		}
+		if (whole1 >= 0) {
+			numer1 = (denom1 * whole1) + numer1;
+		}
+		if (whole1 < 0) {
+			numer1 = -1*(Math.abs(denom1 * whole1) + numer1);
+			
+		}
+		if (whole2 < 0) {
+			numer2 = -1*(Math.abs(denom2 * whole2) + numer2);
+			
+		}
+		if (whole2 >= 0) {
+			numer2 = (denom2 * whole2) + numer2;
 		}
 		
+		
+		int numerA = 0;
+		int denomA = 0;
+		// MULTIPLICATION
+		if (operator.equals("*")) {			
+			numerA = numer1 * numer2;
+			denomA = denom1 * denom2;
+		}
+		// DIVISION
+		else if (operator.equals("/")) {
+			numerA = numer1 * denom2;
+			denomA = denom1 * numer2;
+		}
+		
+		// ADDITION or SUBTRACTION
+		
+		if (operator.equals("+") || operator.contentEquals("-")) {
+			numer1 *= denom2;
+			denomA = denom1 * denom2;
+			numer2 *= denom1;
+			
+			if (operator.equals("+")) {
+				numerA = numer1 + numer2;
+			}
+			else {
+				numerA = numer1 - numer2;
+			}
+		}
+		if (numerA < 0 && denomA < 0) {
+			numerA = Math.abs(numerA);
+			denomA = Math.abs(denomA);
+		}
+		
+		String Final1 = "whole:" + whole1 + " numerator:" + numer1 + " denominator:" + denom1;	
 		String Final = "whole:" + whole2 + " numerator:" + numer2 + " denominator:" + denom2;
+		String y = numerA + "/" + denomA;
 		// RETURNS
-		return Final;
+		return y;
+	//	return Final;
 
 	}
+	
+	
 
 	// TODO: Fill in the space below with any helper methods that you think you will
 	// need
