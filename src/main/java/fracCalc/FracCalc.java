@@ -58,7 +58,6 @@ public class FracCalc {
 		// slash so i took out variable
 		operator = input.substring(spcIndex + 1, spcIndex + 2);
 
-		// System.out.println("operator: " + operator);
 		operand2 = input.substring(spcIndex + 3);
 
 		// SPLIT OPERAND1 INTO INTEGERS NUMBER
@@ -73,24 +72,21 @@ public class FracCalc {
 			int length1 = operand1.length();
 			String c = operand1.substring(slash1 + 1, length1);
 			denom1 = Integer.parseInt(c);
-			// System.out.println("denominator: " + denom1);
 
 			if (undSc != -1) {
 				// WHOLE NUM
 				String a = operand1.substring(0, undSc);
 				whole1 = Integer.parseInt(a);
-				// System.out.println("whole num: " + whole1);
+
 				// FRACTION NUMERATOR WITH "_"
 				String b = operand1.substring(undSc + 1, slash1);
 				numer1 = Integer.parseInt(b);
-				// System.out.println("numerator:" + numer1);
 
 			} else {
 				// FRACTION NUMERATOR WITHOUT "_" (NO WHOLE NUM)
 				whole1 = 0;
 				String b = operand1.substring(0, slash1);
 				numer1 = Integer.parseInt(b);
-				// System.out.println("numerator: " + numer1);
 
 			}
 		} else {
@@ -99,14 +95,12 @@ public class FracCalc {
 			if (undSc != -1) {
 				// WHOLE NUM
 				whole1 = 0;
-				// System.out.println("whole num: " + whole1);
 
 			} else {
 				// FRACTION NUMERATOR WITHOUT "_" (NO WHOLE NUM)
 				int wLength1 = operand2.length();
 				String a = operand1.substring(0);
 				whole1 = Integer.parseInt(a);
-				// System.out.println("whole num: " + whole1);
 
 			}
 		}
@@ -123,24 +117,23 @@ public class FracCalc {
 			int length2 = operand2.length();
 			String f = operand2.substring(slash2 + 1, length2);
 			denom2 = Integer.parseInt(f);
-			// System.out.println("denominator: " + denom2);
 
 			if (undSc2 != -1) {
 				// WHOLE NUM
 				String d = operand2.substring(0, undSc2);
 				whole2 = Integer.parseInt(d);
-				// System.out.println("whole2: " + whole2);
+
 				// FRACTION NUMERATOR
 				String e = operand2.substring(undSc2 + 1, slash2);
 				numer2 = Integer.parseInt(e);
-				// System.out.println("numerator:" +numer2);
+
 			} else {
 				// WHOLE WITHOUT "_"
 				whole2 = 0;
 				// NUMERATOR WITHOUT "_"
 				String e = operand2.substring(0, slash2);
 				numer2 = Integer.parseInt(e);
-				// System.out.println("numerator: " + numer2);
+
 			}
 
 		} else {
@@ -153,29 +146,28 @@ public class FracCalc {
 				// WHOLE NUM
 				String d = operand2.substring(0);
 				whole2 = Integer.parseInt(d);
-				// System.out.println("whole2: " + whole2);
+
 			}
 		}
 		if (whole1 >= 0) {
 			numer1 = (denom1 * whole1) + numer1;
 		}
 		if (whole1 < 0) {
-			numer1 = -1*(Math.abs(denom1 * whole1) + numer1);
-			
+			numer1 = -1 * (Math.abs(denom1 * whole1) + numer1);
+
 		}
 		if (whole2 < 0) {
-			numer2 = -1*(Math.abs(denom2 * whole2) + numer2);
-			
+			numer2 = -1 * (Math.abs(denom2 * whole2) + numer2);
+
 		}
 		if (whole2 >= 0) {
 			numer2 = (denom2 * whole2) + numer2;
 		}
-		
-		
+
 		int numerA = 0;
 		int denomA = 0;
 		// MULTIPLICATION
-		if (operator.equals("*")) {			
+		if (operator.equals("*")) {
 			numerA = numer1 * numer2;
 			denomA = denom1 * denom2;
 		}
@@ -184,18 +176,17 @@ public class FracCalc {
 			numerA = numer1 * denom2;
 			denomA = denom1 * numer2;
 		}
-		
+
 		// ADDITION or SUBTRACTION
-		
+
 		if (operator.equals("+") || operator.contentEquals("-")) {
 			numer1 *= denom2;
 			denomA = denom1 * denom2;
 			numer2 *= denom1;
-			
+
 			if (operator.equals("+")) {
 				numerA = numer1 + numer2;
-			}
-			else {
+			} else {
 				numerA = numer1 - numer2;
 			}
 		}
@@ -203,17 +194,51 @@ public class FracCalc {
 			numerA = Math.abs(numerA);
 			denomA = Math.abs(denomA);
 		}
-		
-		String Final1 = "whole:" + whole1 + " numerator:" + numer1 + " denominator:" + denom1;	
-		String Final = "whole:" + whole2 + " numerator:" + numer2 + " denominator:" + denom2;
-		String y = numerA + "/" + denomA;
+
+		String y = "";
+		int numerAbs = Math.abs(numerA);
+		int denomAbs = Math.abs(denomA);
+		// CHECK IF CAN BE SIMPLIFIED TO WHOLE NUMBER
+		if ((numerA % denomA) == 0) {
+			int ans = numerA / denomA;
+			y = "" + ans + "";
+
+		}
+
+		// REDUCING THE FRACTIONS AND RETURN IF PROPER
+		else if (numerAbs < denomAbs) {
+			for (int i = numerAbs; i > 0; i--) {
+				if (((numerA % i) == 0) && ((denomA % i) == 0)) {
+					numerA /= i;
+					denomA /= i;
+				}
+			}
+			if (numerA < 0 || denomA < 0) {
+				denomA = Math.abs(denomA);
+				numerA = Math.abs(numerA);
+				y = "" + numerA * -1 + "/" + denomA;
+			} else {
+				y = "" + numerA + "/" + denomA;
+			}
+
+		} else if (denomAbs < numerAbs) {
+			for (int i = denomAbs; i > 0; i--) {
+				if (((numerA % i) == 0) && ((denomA % i) == 0)) {
+					numerA /= i;
+					denomA /= i;
+				}
+			}
+			// IMPROPER FRACTION to MIXED
+			int wholeA = numerA / denomA;
+			numerA = Math.abs(numerA % denomA);
+			denomA = Math.abs(denomA);
+			y = "" + wholeA + "_" + numerA + "/" + denomA;
+		}
+
 		// RETURNS
 		return y;
-	//	return Final;
 
 	}
-	
-	
 
 	// TODO: Fill in the space below with any helper methods that you think you will
 	// need
